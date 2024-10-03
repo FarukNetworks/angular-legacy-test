@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="formApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form App</title>
+
+    <!-- jQuery (required for Toastr) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Our CSS file -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Our main JavaScript file -->
+    <script src="main.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body ng-app="formApp">
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- My main AngularJS module -->
+    <script type="text/javascript" src="app.js"></script>
+
+    <main>
+        <div class="max-w-7xl mx-auto py-32">
+            <h1 class="text-center text-4xl mb-12 font-[700] text-green-600">Client Contact Form</h1>
+
+            <div class="bg-gray-100 p-10 shadow-sm max-w-4xl mx-auto">
+
+                <div ng-controller="formController">
+                    <form ng-repeat="client in clients" class="flex flex-col gap-3 mt-10 first:mt-0 group"
+                        ng-submit="submitForm(client)">
+
+                        <div class="flex gap-3 items-center mb-5">
+                            <i class="fa-solid fa-user text-green-600 text-3xl"></i>
+                            <h2 class="text-3xl font-[700]">New Client</h2>
+                            <i class="fa-solid fa-crown text-yellow-500 text-3xl"></i>
+                        </div>
+
+                        <div>
+                            <label for="name" class="text-green-600 font-[700]">Name</label>
+                            <input type="text" id="name" name="name" ng-model="client.name"
+                                class="border border-gray-300 w-full p-2 rounded-md" required>
+                        </div>
+
+                        <div>
+                            <label for="email" class="text-green-600 font-[700]">Email</label>
+                            <input type="email" id="email" name="email" ng-model="client.email"
+                                class="border border-gray-300 w-full p-2 rounded-md" required>
+                        </div>
+
+                        <div>
+                            <label for="phone" class="text-green-600 font-[700]">Phone</label>
+                            <input type="tel" id="phone" name="phone" ng-model="client.phone"
+                                class="border border-gray-300 w-full p-2 rounded-md" required>
+                        </div>
+
+                        <div>
+                            <label for="street" class="text-green-600 font-[700]">Street Address</label>
+                            <input type="text" id="street" name="street" ng-model="client.street"
+                                class="border border-gray-300 w-full p-2 rounded-md" required>
+                        </div>
+
+                        <div>
+                            <label for="options" class="text-green-600 font-[700] block">Options</label>
+                            <div class="flex flex-col gap-3 pt-6">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="option1" name="option1" ng-model="client.option1"
+                                        class="border border-gray-300 w-4 h-4 rounded-md">
+                                    <label for="option1" class="text-green-600 font-[700] ml-2">Option 1</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="option2" name="option2" ng-model="client.option2"
+                                        class="border border-gray-300 w-4 h-4 rounded-md">
+                                    <label for="option2" class="text-green-600 font-[700] ml-2">Option 2</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="option3" name="option3" ng-model="client.option3"
+                                        class="border border-gray-300 w-4 h-4 rounded-md">
+                                    <label for="option3" class="text-green-600 font-[700] ml-2">Option 3</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inside the form, replace the Form Holder section with the following -->
+
+                        <div class="mt-3">
+                            <div class="flex items-center mb-2">
+                                <input type="checkbox" id="holder" name="holder" ng-model="client.holder"
+                                    ng-checked="client.holder || ($index === 0)" ng-change="updateFormHolder($index)"
+                                    class="border border-gray-300 w-4 h-4 rounded-md">
+                                <label for="holder" class="text-green-600 font-[700] ml-2">Form Holder</label>
+                            </div>
+                            <p class="font-[500] opacity-30 group-first:block hidden">(Automatically selected as Form Holder)</p>
+                        </div>
+
+
+                        <div class="flex items-center justify-between mt-10">
+                            <button type="button" class="bg-blue-600 text-white font-[700] px-4 py-2 rounded-md"
+                                ng-click="addClient()">Add Another Client <i class="ml-2 fa-solid fa-plus"></i></button>
+                            <button type="submit" class="bg-green-600 text-white font-[700] px-4 py-2 rounded-md">Submit
+                                <i class="ml-2 fa-solid fa-paper-plane"></i></button>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <!-- Show "Remove" button only if there's more than 1 client -->
+                            <button type="button" ng-if="$index > 0" ng-click="removeClient($index)"
+                                class="bg-red-600 text-white font-[700] px-4 py-2 rounded-md">
+                                Remove Client <i class="ml-2 fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+
+
+                    </form>
+
+                    <div ng-if="jsonData" class="mt-10">
+                        <h2 class="text-xl font-[700] text-green-600">Form Data in JSON:</h2>
+                        <pre class="bg-gray-200 p-4 rounded-md mt-2">
+                            {{ jsonData | json }}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
